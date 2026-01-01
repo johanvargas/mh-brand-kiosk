@@ -1,0 +1,59 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "question": "What's your main scalp concern?",
+      "sampleAnswers": [
+        "Persistent flakes",
+        "Itchiness + irritation",
+        "Oily, greasy buildup at the roots",
+        "Redness or scaly patches",
+        "Thinning hair or shedding"
+      ]
+    },
+    {
+      "id": 2,
+      "question": "What does your hair need most right now?",
+      "sampleAnswers": [
+        "A reset from flakes",
+        "Soothing + calming",
+        "Deep purifying + clarifying",
+        "Strong, targeted treatment",
+        "Support for thicker, fuller-looking hair"
+      ]
+    },
+    {
+      "id": 3,
+      "question": "How intense are your symptoms?",
+      "sampleAnswers": [
+        "Mild, but annoying",
+        "Moderate and recurring",
+        "Worse when I skip a wash",
+        "Pretty severe or chronic",
+        "Noticeable thinning or widening part"
+      ]
+    },
+    {
+      "id": 4,
+      "question": "What type of result are you hoping for?",
+      "sampleAnswers": [
+        "Reliable, everyday flake control",
+        "Long-lasting itch relief",
+        "Break down build up so my scalp feels clean",
+        "A powerhouse formula that really treats the issue",
+        "Help encouraging hair density + regrowth support"
+      ]
+    },
+    {
+      "id": 5,
+      "question": "How often do you plan to use your shampoo?",
+      "sampleAnswers": [
+        "Every wash — it needs to be gentle",
+        "A few times a week for maintenance",
+        "As needed when buildup hits",
+        "Regularly as part of a treatment routine",
+        "I'm also open to adding a treatment outside the shower"
+      ]
+    }
+  ]
+}
