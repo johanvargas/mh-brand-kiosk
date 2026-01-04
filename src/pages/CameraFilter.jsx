@@ -1,9 +1,13 @@
-import { useRef, useEffect, useState } from "react";
-import * as tf from "@tensorflow/tfjs";
+// TODO: screenshot capability
+// TODO: posting them to home page carousel
+// TODO: rotation and scaling on hairdos
+// TODO: pausing detection and reseting, clean reset
+
+import * as tf from "@tensorflow/tfjs"; /* Appears as not read but is VERY IMPORTANT */
 import * as facemesh from "@tensorflow-models/face-landmarks-detection";
+import { useRef, useEffect, useState } from "react";
 import Webcam from "react-webcam";
 import { NavLink } from "react-router";
-import hairdo from "../assets/bob_cutout.png";
 import hairdo1 from "../assets/PNGs/AR_Hairstyles_1.png";
 import hairdo2 from "../assets/PNGs/AR_Hairstyles_2.png";
 import hairdo3 from "../assets/PNGs/AR_Hairstyles_3.png";
@@ -14,23 +18,37 @@ import hairdo7 from "../assets/PNGs/AR_Hairstyles_7.png";
 import hairdo8 from "../assets/PNGs/AR_Hairstyles_8.png";
 import hairdo9 from "../assets/PNGs/AR_Hairstyles_9.png";
 import hairdo10 from "../assets/PNGs/AR_Hairstyles_10.png";
+
 const HEIGHT = 434;
+const WIDTH = 788;
 
 export default function CameraFilter() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const faceRef = useRef(null);
   const hairdoRef = useRef(hairdo1);
-  
-  const hairdoImages = [hairdo1, hairdo2, hairdo3, hairdo4, hairdo5, hairdo6, hairdo7, hairdo8, hairdo9, hairdo10];
+  const [filter, setFilter] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const hairdoImages = [
+    hairdo1,
+    hairdo2,
+    hairdo3,
+    hairdo4,
+    hairdo5,
+    hairdo6,
+    hairdo7,
+    hairdo8,
+    hairdo9,
+    hairdo10,
+  ];
 
   const detect = async (net) => {
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
       webcamRef.current.video.readyState === 4
-    ) {
+  ) {
       const video = webcamRef.current.video;
       const videoWidth = webcamRef.current.video.videoWidth;
       const videoHeight = webcamRef.current.video.videoHeight;
@@ -55,29 +73,36 @@ export default function CameraFilter() {
       },
     );
 
-    // draw interval 
+    // draw interval
     setInterval(() => {
+      //TODO: type error reading null, accumulates after each render
       const ctx = canvasRef.current.getContext("2d", {
         willReadFrequently: true,
         //desynchronized: true,
-      }); // HTMLCanvasElement.getContext() creates the 'canvas' to draw on
+      });
+
+      // HTMLCanvasElement.getContext() creates the 'canvas' to draw on
       requestAnimationFrame(() => {
         //ctx.clearRect(0,0,ctx.width,ctx.height)
-        //ctx.imageSmoothingEnabled = true;
-        const x = Math.floor(faceRef.current[0].keypoints[10].x);
-        const y = Math.floor(faceRef.current[0].keypoints[10].y);
-        const z = Math.floor(faceRef.current[0].keypoints[10].z);
+        //const x = Math.floor(faceRef.current[0].keypoints[10].x);
+        //const y = Math.floor(faceRef.current[0].keypoints[10].y);
+        //const z = Math.floor(faceRef.current[0].keypoints[10].z);
+        const faceWidth = Math.floor(faceRef.current[0].box.width);
+        const faceHeight = Math.floor(faceRef.current[0].box.height);
+        const x = Math.floor(faceRef.current[0].box.xMin);
+        const y = Math.floor(faceRef.current[0].box.yMin);
 
-        //console.log("x, y z, :", x, y, z);
-        console.log(" z :", z);
-        //console.log(hairdoRef.current);
-        //console.log(hairdo);
-        
+        console.log("face width: x: ", faceWidth, x);
+
         const image = new Image();
         image.src = hairdoRef.current;
-        //ctx.drawImage(image, (x - 100), (y - 150), 220, 250);
-        image.onload = ctx.drawImage(image, x + 60, y + 110, 175 * ((z / 100) - 1), 250 * ((z /100) - 1)); 
-          //(xPosition, yPosition (from top left), width, height)
+        ctx.fillRect(x, y, 10, 10);
+
+        //(xPosition, yPosition (from top left), width, height)
+        ctx.drawImage(image, x, y - 100, faceWidth, faceHeight);
+
+        //image.onload = ctx.drawImage(image, x + 60, y + 110, 175 * ((z / 100) - 1), 250 * ((z /100) - 1));
+        //image.onload = ctx.drawImage(image, x + 60, y + 110, 175, 250);
         ctx.restore();
       });
     }, 1000 / 60);
@@ -89,7 +114,7 @@ export default function CameraFilter() {
   };
 
   useEffect(() => {
-    runFacemesh();
+    //runFacemesh();
   }, []);
 
   useEffect(() => {
@@ -97,14 +122,14 @@ export default function CameraFilter() {
   }, [currentImageIndex]);
 
   const handlePreviousImage = () => {
-    setCurrentImageIndex((prevIndex) => 
-      prevIndex === 0 ? hairdoImages.length - 1 : prevIndex - 1
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? hairdoImages.length - 1 : prevIndex - 1,
     );
   };
 
   const handleNextImage = () => {
-    setCurrentImageIndex((prevIndex) => 
-      prevIndex === hairdoImages.length - 1 ? 0 : prevIndex + 1
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === hairdoImages.length - 1 ? 0 : prevIndex + 1,
     );
   };
 
@@ -115,12 +140,10 @@ export default function CameraFilter() {
           ref={webcamRef}
           style={{
             //position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
             left: 0,
             right: 0,
             zIndex: 7,
-            width: 788,
+            width: WIDTH,
             height: HEIGHT,
           }}
         />
@@ -128,13 +151,10 @@ export default function CameraFilter() {
           ref={canvasRef}
           style={{
             position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
+            top: 0,
             left: 0,
-            right: 0,
-            textAlign: "center",
             zIndex: 9,
-            width: 788,
+            width: WIDTH,
             height: HEIGHT,
           }}
         ></canvas>
@@ -148,10 +168,10 @@ export default function CameraFilter() {
           >
             ‹
           </button>
-          <img 
-            src={hairdoImages[currentImageIndex]} 
-            alt={`Hairdo ${currentImageIndex + 1}`} 
-            className="product-image" 
+          <img
+            src={hairdoImages[currentImageIndex]}
+            alt={`Hairdo ${currentImageIndex + 1}`}
+            className="product-image"
           />
           <button
             type="button"

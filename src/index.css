@@ -97,15 +97,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 300px;
+  max-height: 300px;
 }
 
 .product-image {
   max-width: 100%;
-  max-height: 400px;
+  max-height: 250px;
   object-fit: contain;
-  width: auto;
-  height: auto;
 }
 
 .results-cta-button {
@@ -184,7 +182,7 @@ body {
   background: transparent;
   border: none;
   border-radius: 0;
-  padding: 2em 1em;
+  padding: 1em 1em;
   box-shadow: none;
   flex: 1;
   min-height: 0;
@@ -257,12 +255,12 @@ body {
 .menu-option-button:focus {
   outline: none;
   background: #ffeddd;
-  border: 1px solid #000 !important;
+  border: 3px solid #000 !important;
 }
 
 .menu-option-button.selected {
   background: #ffeddd;
-  border: 1px solid #000 !important;
+  border: 3px solid #000 !important;
 }
 
 .menu-go-button {
@@ -319,7 +317,7 @@ body {
   font-weight: 700;
   color: #000;
   text-align: center;
-  margin: .6em 0 0em 0;
+  margin: 0em 0 0em 0;
   flex-shrink: 0;
   width: 100%;
   max-width: 100%;
@@ -330,7 +328,7 @@ body {
 .question-progress-line {
   width: 100%;
   height: 10px;
-  margin: 0 auto 2em auto;
+  margin: 0 auto 0em auto;
   flex-shrink: 0;
   position: relative;
   background-color: #000;
@@ -379,14 +377,20 @@ body {
   font-size: 1.61rem;
   font-weight: 400;
   color: #000;
-  line-height: 1.5;
-  margin: 0 0 2em 0;
+  line-height: 1;
   text-align: center;
   flex-shrink: 0;
   width: 100%;
   max-width: 100%;
   padding: 0;
   box-sizing: border-box;
+  height: calc(1060px * 0.15);
+  min-height: calc(1060px * 0.15);
+  max-height: calc(1060px * 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 /* Options Container */
@@ -395,9 +399,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0.75em;
-  margin: 0;
   flex: 1;
-  min-height: 0;
   width: 100%;
   max-width: 100%;
   padding: 0;
@@ -409,6 +411,7 @@ body {
   max-width: 680px;
   min-height: 58px;
   padding: 18px 24px;
+  height: 100px;
   font-size: 1.2rem;
   font-weight: 500;
   text-align: center;
@@ -433,7 +436,7 @@ body {
   outline: none;
   border-color: #000;
   background: #ffeddd;
-  border-width: 4px;
+  border-width: 3px;
 }
 
 .option-button:active {
@@ -443,7 +446,7 @@ body {
 .option-button.selected {
   background: #ffeddd;
   border-color: #000;
-  border-width: 2px;
+  border-width: 3px;
   color: #000;
 }
 
@@ -489,7 +492,6 @@ button:active {
   gap: 0;
   flex-shrink: 0;
   width: 100%;
-  margin-top: 2em;
   padding: 0 1em;
   box-sizing: border-box;
 }
@@ -716,8 +718,7 @@ p {
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 2em 1em;
-  margin-top: auto;
+  padding-bottom: 1em;
   flex-shrink: 0;
   box-sizing: border-box;
 }
