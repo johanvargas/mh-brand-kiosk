@@ -14,9 +14,9 @@ export default function Results() {
 
   return (
     <>
-      <div className="results-content">
+      <div className="quiz-navigation">
         <div className="results-header">
-          <h1 className="results-title">
+          <h1 className="title">
             {currentProduct.name}
             <span className="results-title-underline"></span>
           </h1>

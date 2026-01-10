@@ -34,7 +34,6 @@ const QuestionSequence = () => {
   };
 
   const Button = () => {
-
     return (
       <>
         <div className="quiz-navigation">
@@ -81,11 +80,6 @@ const QuestionSequence = () => {
               Next
             </button>
           )}
-          <div className="results-links-container">
-            <NavLink to="/" className="home-link">Home</NavLink>
-            <span className="results-links-separator">|</span>
-            <NavLink to="/camera" className="results-camera-link">Fun with Hair Styles</NavLink>
-          </div>
         </div>
       </>
     );
@@ -111,7 +105,7 @@ const QuestionSequence = () => {
 
     return (
       <div className="question-container">
-        <h1 className="question-title">
+        <h1 className="title">
           Question {questionnaireState.currentQuestionIndex + 1}
         </h1>
         <div 
@@ -139,6 +133,11 @@ const QuestionSequence = () => {
     <>
       <SelectQuestions />
       <Button />
+          <div className="results-links-container">
+            <NavLink to="/" className="home-link">Home</NavLink>
+            <span className="results-links-separator">|</span>
+            <NavLink to="/camera" className="results-camera-link">Fun with Hair Styles</NavLink>
+          </div>
     </>
   );
 };

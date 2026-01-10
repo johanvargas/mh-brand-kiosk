@@ -20,8 +20,8 @@ const Menu = () => {
 
   return (
     <>
-      <div className="question-container menu-container">
-        <h1 className="question-title menu-title">
+      <div className="question-container">
+        <h1 className="title">
           Select One
           <span className="menu-title-underline"></span>
         </h1>
