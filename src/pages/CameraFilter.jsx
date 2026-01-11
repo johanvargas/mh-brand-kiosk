@@ -93,7 +93,7 @@ export default function CameraFilter() {
         const rightY = Math.floor(faceRef.current[0].keypoints[454].y);
         const rightZ = Math.floor(faceRef.current[0].keypoints[454].z);
 
-        const bottomX = Math.floor(faceRef.current[0].keypoints[152].x);
+        //const bottomX = Math.floor(faceRef.current[0].keypoints[152].x);
         const bottomY = Math.floor(faceRef.current[0].keypoints[152].y);
         const bottomZ = Math.floor(faceRef.current[0].keypoints[152].z);
 
@@ -124,7 +124,7 @@ export default function CameraFilter() {
         image.src = hairdoRef.current;
 
         // Calculate center point for rotation
-        const centerX = x + faceWidth / 2;
+        const centerX = x + faceWidth / 2.7;
         const centerY = y + faceHeight / 2;
 
         //console.log("refs, ", rotationXRef.current, rotationYRef.current, rotationZRef.current)
@@ -135,39 +135,42 @@ export default function CameraFilter() {
 
         // Apply all rotation transformations
         ctx.save();
-        ctx.translate(centerX, centerY);
+        ctx.translate(centerX - 10, centerY);
 
         // Apply Z-axis rotation (roll)
         ctx.rotate(rotationZRef.current);
 
         // Apply X and Y axis rotations through scaling (simulating 3D perspective)
-        ctx.scale(scaleX, scaleY * 0.93);
+        ctx.scale(scaleX, scaleY);
 
         // Draw image centered
+        //ctx.drawImage(
+        //  image,
+        //  -faceWidth / 2,
+        //  -faceHeight / 2,
+        //  faceWidth + 5,
+        //  faceHeight,
+        //);
+
         ctx.drawImage(
           image,
           -faceWidth / 2,
-          -faceHeight / 2,
-          faceWidth,
+          -faceHeight / 1.01,
+          faceWidth + 25,
           faceHeight,
         );
+
         ctx.restore();
       });
     }, 1000 / 60);
 
     // detect interval
     setInterval(() => {
-
       detect(net);
     }, 1000 / 60);
   };
 
   useEffect(() => {
-    // These are set on render, initial value for rotationN = 0, so 0
-
-    //rotationXRef.current = (rotationX * Math.PI) / 180;
-    //rotationYRef.current = (rotationY * Math.PI) / 180;
-    //rotationZRef.current = (rotationZ * Math.PI) / 180;
     runFacemesh();
   }, []);
 
