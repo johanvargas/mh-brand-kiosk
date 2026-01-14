@@ -260,8 +260,9 @@ export default function CameraFilter() {
           ref={canvasRef}
           style={{
             position: "absolute",
+            margin: "0 auto",
             top: 0,
-            left: 0,
+            left: 597,
             zIndex: 9,
             width: WIDTH,
             height: HEIGHT,
