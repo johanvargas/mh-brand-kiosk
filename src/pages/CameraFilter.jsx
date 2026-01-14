@@ -8,8 +8,8 @@ import { useRef, useEffect, useState } from "react";
 import Webcam from "react-webcam";
 import { NavLink } from "react-router";
 
-const HEIGHT = 434;
-const WIDTH = 788;
+const HEIGHT = 480;
+const WIDTH = 640;
 //const HEIGHT = 350;
 //const WIDTH = 350;
 
@@ -130,7 +130,7 @@ export default function CameraFilter() {
         image.src = hairdoRef.current;
 
         // Calculate center point for rotation
-        const centerX = x + faceWidth / 3;
+        const centerX = x + faceWidth / 2;
         const centerY = y + faceHeight / 2;
 
         //console.log("refs, ", rotationXRef.current, rotationYRef.current, rotationZRef.current)
@@ -141,7 +141,7 @@ export default function CameraFilter() {
 
         // Apply all rotation transformations
         ctx.save();
-        ctx.translate(centerX - 10, centerY);
+        ctx.translate(centerX, centerY);
         //ctx.translate(centerX, centerY);
         // Apply Z-axis rotation (roll)
         ctx.rotate(rotationZRef.current);
@@ -161,8 +161,8 @@ export default function CameraFilter() {
         ctx.drawImage(
           image,
           -faceWidth / 2,
-          -faceHeight / 1.01,
-          faceWidth + 25,
+          -faceHeight / 2,
+          faceWidth,
           faceHeight,
         );
 
@@ -208,40 +208,7 @@ export default function CameraFilter() {
         prevIndex === hairdoImages.length - 1 ? 0 : prevIndex + 1,
       );
     };
-  
-  //  // Z-axis rotation handlers (roll)
-  //  const handleRotateZLeft = () => {
-  //    setRotationZ((prev) => prev - 15);
-  //  };
-  //
-  //  const handleRotateZRight = () => {
-  //    setRotationZ((prev) => prev + 15);
-  //  };
-  //
-  //  // X-axis rotation handlers (pitch - tilt forward/backward)
-  //  const handleRotateXUp = () => {
-  //    setRotationX((prev) => Math.min(prev + 15, 89)); // Limit to prevent flipping
-  //  };
-  //
-  //  const handleRotateXDown = () => {
-  //    setRotationX((prev) => Math.max(prev - 15, -89)); // Limit to prevent flipping
-  //  };
-  //
-  //  // Y-axis rotation handlers (yaw - turn left/right)
-  //  const handleRotateYLeft = () => {
-  //    setRotationY((prev) => Math.max(prev - 15, -89)); // Limit to prevent flipping
-  //  };
-  //
-  //  const handleRotateYRight = () => {
-  //    setRotationY((prev) => Math.min(prev + 15, 89)); // Limit to prevent flipping
-  //  };
-  //
-  //  const handleResetRotation = () => {
-  //    setRotationZ(0);
-  //    setRotationX(0);
-  //    setRotationY(0);
-  //  };
-  //
+
   return (
     <>
       <div className="camera-page-container">
@@ -260,9 +227,9 @@ export default function CameraFilter() {
           ref={canvasRef}
           style={{
             position: "absolute",
-            margin: "0 auto",
+            //margin: "0 auto",
             top: 0,
-            left: 597,
+            left: 0,
             zIndex: 9,
             width: WIDTH,
             height: HEIGHT,
