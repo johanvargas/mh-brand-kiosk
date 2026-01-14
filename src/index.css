@@ -9,7 +9,6 @@
   font-weight: 400;
   font-size: 18px;
   color-scheme: light dark;
-  color: #0071CE;
   background-color: #ffffff;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -24,8 +23,8 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 788px;
-  height: 1060px;
+  width: 100vw;
+  height: 100vh;
   padding: 0;
   font-size: 1.125rem;
   box-sizing: border-box;
@@ -561,8 +560,6 @@ p {
 .home-page {
   background-color: #ffffff !important;
   padding: 0;
-  height: 1060px;
-  max-height: 1060px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -610,7 +607,7 @@ p {
   gap: 2em;
   min-height: 0;
   box-sizing: border-box;
-  height: calc(1060px - 434px);
+  height: calc(100vh - 434px);
 }
 
 .home-content-section .home-title {
@@ -679,10 +676,11 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 1060px;
+  height: 100%;
   background-color: #ffffff;
   padding: 0;
   box-sizing: border-box;
+  margin: auto;
 }
 
 .camera-container {

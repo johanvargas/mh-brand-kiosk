@@ -10,6 +10,8 @@ import { NavLink } from "react-router";
 
 const HEIGHT = 434;
 const WIDTH = 788;
+//const HEIGHT = 350;
+//const WIDTH = 350;
 
 // Dynamically import all hairdo images using Vite's import.meta.glob()
 const hairdoModules = import.meta.glob("../assets/PNGs/AR_Hairstyles_*.png", {
@@ -33,12 +35,12 @@ export default function CameraFilter() {
   const rotationZRef = useRef(0); // z-axis rotation in radians (roll)
   const rotationXRef = useRef(0); // x-axis rotation in radians (pitch)
   const rotationYRef = useRef(0); // y-axis rotation in radians (yaw)
-  const [filter, setFilter] = useState(false);
+  //const [filter, setFilter] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [rotationZ, setRotationZ] = useState(0); // z-axis rotation in degrees
   const [rotationX, setRotationX] = useState(0); // x-axis rotation in degrees
   const [rotationY, setRotationY] = useState(0); // y-axis rotation in degrees
-  const [context, setContext] = useState(false);
+  //const [context, setContext] = useState(false);
 
   const detect = async (net) => {
     if (
@@ -56,7 +58,11 @@ export default function CameraFilter() {
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
 
-      faceRef.current = await net.estimateFaces(video);
+      try {
+        faceRef.current = await net.estimateFaces(video);
+      } catch(err) {
+        console.log("fetch error: ", err);``
+      }
     }
   };
 
@@ -81,7 +87,7 @@ export default function CameraFilter() {
 
       // HTMLCanvasElement.getContext() creates the 'canvas' to draw on
       requestAnimationFrame(() => {
-        const topX = Math.floor(faceRef.current[0].keypoints[10].x);
+        //const topX = Math.floor(faceRef.current[0].keypoints[10].x);
         const topY = Math.floor(faceRef.current[0].keypoints[10].y);
         const topZ = Math.floor(faceRef.current[0].keypoints[10].z);
 
@@ -124,7 +130,7 @@ export default function CameraFilter() {
         image.src = hairdoRef.current;
 
         // Calculate center point for rotation
-        const centerX = x + faceWidth / 2.7;
+        const centerX = x + faceWidth / 3;
         const centerY = y + faceHeight / 2;
 
         //console.log("refs, ", rotationXRef.current, rotationYRef.current, rotationZRef.current)
@@ -136,14 +142,14 @@ export default function CameraFilter() {
         // Apply all rotation transformations
         ctx.save();
         ctx.translate(centerX - 10, centerY);
-
+        //ctx.translate(centerX, centerY);
         // Apply Z-axis rotation (roll)
         ctx.rotate(rotationZRef.current);
 
         // Apply X and Y axis rotations through scaling (simulating 3D perspective)
         ctx.scale(scaleX, scaleY);
 
-        // Draw image centered
+        //n Draw image centered
         //ctx.drawImage(
         //  image,
         //  -faceWidth / 2,
