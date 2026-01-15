@@ -160,9 +160,9 @@ export default function CameraFilter() {
 
         ctx.drawImage(
           image,
-          -faceWidth / 2,
-          -faceHeight / 2,
-          faceWidth,
+          -faceWidth / 1.5, // position of image origin point (0,0)
+          -faceHeight,
+          faceWidth * 1.3, // actual width, from sideburn to sideburn
           faceHeight,
         );
 
