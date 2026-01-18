@@ -99,9 +99,29 @@ body {
 }
 
 .product-image {
-  max-width: 100%;
-  max-height: 400px;
+  max-width: 75%;
+  max-height: 300px;
   object-fit: contain;
+}
+
+.carousel-button {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 1.25rem;
+  min-height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-button:hover {
+  background-color: #e0e0e0;
+  transform: none;
 }
 
 .results-cta-button {
@@ -633,7 +653,7 @@ p {
   color: #000;
   text-align: center;
   line-height: 1.2;
-  margin: 0;
+  margin: 1em 0;
   padding: 0;
 }
 
