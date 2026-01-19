@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useActionData, NavLink } from "react-router";
 import products from "../database/products.js"; 
+import { io } from "socket.io-client";
 
+/* Socket IO connection */
+const socket = io("http://localhost:8081");
 
 export default function Results() {
   const actData = useActionData();
@@ -11,6 +14,11 @@ export default function Results() {
   useEffect(() => {
     setCurrentProductIndex(actData.selection);
   },[]);
+
+  const setCubby = (cub) => {
+    console.log("cubby number: ", cub)
+    socket.emit("trigger", cub)
+  }
 
   return (
     <>
@@ -33,7 +41,7 @@ export default function Results() {
       </div>
         <button 
           className="results-cta-button"
-          onClick={() => "animation to cubby"}
+          onClick={() => setCubby(currentProductIndex)}
         >
           See Product at Shelf
         </button>

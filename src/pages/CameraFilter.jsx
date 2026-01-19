@@ -9,6 +9,7 @@ import * as facemesh from "@tensorflow-models/face-landmarks-detection";
 import { useRef, useEffect, useState } from "react";
 import Webcam from "react-webcam";
 import { NavLink } from "react-router";
+import { io } from "socket.io-client";
 
 const HEIGHT = 480;
 const WIDTH = 640;
@@ -27,6 +28,11 @@ const hairdoImages = Object.keys(hairdoModules)
   })
   .map((key) => hairdoModules[key].default || hairdoModules[key]);
 
+
+/* Socket IO connection */
+const socket = io("http://localhost:8081");
+
+/* Main Component */
 export default function CameraFilter() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -39,7 +45,8 @@ export default function CameraFilter() {
   const [rotationZ, setRotationZ] = useState(0); // z-axis rotation in degrees
   const [rotationX, setRotationX] = useState(0); // x-axis rotation in degrees
   const [rotationY, setRotationY] = useState(0); // y-axis rotation in degrees
-
+  const serialMessage = useRef("no current serial message");
+  
   const detect = async (net) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -170,8 +177,22 @@ export default function CameraFilter() {
     }, 1000 / 60);
   };
 
+  const setSerialMessage = (data) => {
+    serialMessage.current = data
+  }
+
+  /* useEffect rendering section */
+  useEffect(() => {
+    socket.on("hello", (arg) => {
+      console.log("connected:  ", arg);
+      setSerialMessage(arg);
+    })
+
+  }, [serialMessage])
+
   useEffect(() => {
     runFacemesh();
+    socket.emit("trigger", currentImageIndex)
   }, []);
 
   useEffect(() => {
@@ -232,7 +253,7 @@ export default function CameraFilter() {
             }}
           ></canvas>
         </div>
-
+        <p>{serialMessage.current}</p>
         <h2 className="home-title">Select Your Style</h2>
         <div className="product-image-container">
           <button

@@ -20,8 +20,8 @@ const QuestionSequence = () => {
 
   // function to move to next
   const handleNext = () => {
-    console.log("question index: ", questionnaireState.currentQuestionIndex);
-    console.log("selected answer: ", selectedAnswer);
+    //console.log("question index: ", questionnaireState.currentQuestionIndex);
+    //console.log("selected answer: ", selectedAnswer);
     if (selectedAnswer <= 4 && questionnaireState.currentQuestionIndex < 4) {
       updateAnswerWeight(
         selectedAnswer,
@@ -37,7 +37,8 @@ const QuestionSequence = () => {
     return (
       <>
         <div className="quiz-navigation">
-          {questionnaireState.currentQuestionIndex === 4 && Number.isInteger(selectedAnswer) ? (
+          {questionnaireState.currentQuestionIndex === 4 &&
+          Number.isInteger(selectedAnswer) ? (
             <Form action="/results" method="post">
               <input
                 type="hidden"
@@ -93,12 +94,12 @@ const QuestionSequence = () => {
       setSelectedAnswer(optionIndex);
     };
 
-    // Calculate progress: fill from right to left
+    /* Calculate progress: fill from right to left
     // Question 1 (index 0) = 20% filled from right
     // Question 2 (index 1) = 40% filled from right
     // Question 3 (index 2) = 60% filled from right
     // Question 4 (index 3) = 80% filled from right
-    // Question 5 (index 4) = 100% filled from right
+    // Question 5 (index 4) = 100% filled from right */
     const totalQuestions = snap.questions.length;
     const currentQuestion = questionnaireState.currentQuestionIndex + 1; // 1-5
     const fillPercentage = (currentQuestion / totalQuestions) * 100;
@@ -108,9 +109,9 @@ const QuestionSequence = () => {
         <h1 className="title">
           Question {questionnaireState.currentQuestionIndex + 1}
         </h1>
-        <div 
+        <div
           className="question-progress-line"
-          style={{ '--fill-percentage': `${fillPercentage}%` }}
+          style={{ "--fill-percentage": `${fillPercentage}%` }}
         ></div>
         <h2 className="question-text">{questionSet.question}</h2>
         <div className="options-container">
@@ -133,11 +134,15 @@ const QuestionSequence = () => {
     <>
       <SelectQuestions />
       <Button />
-          <div className="results-links-container">
-            <NavLink to="/" className="home-link">Home</NavLink>
-            <span className="results-links-separator">|</span>
-            <NavLink to="/camera" className="results-camera-link">Fun with Hair Styles</NavLink>
-          </div>
+      <div className="results-links-container">
+        <NavLink to="/" className="home-link">
+          Home
+        </NavLink>
+        <span className="results-links-separator">|</span>
+        <NavLink to="/camera" className="results-camera-link">
+          Fun with Hair Styles
+        </NavLink>
+      </div>
     </>
   );
 };
