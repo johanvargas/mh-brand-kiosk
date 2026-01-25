@@ -168,22 +168,9 @@ export default function CameraFilter() {
     }, 1000 / 60);
   };
 
-  const setSerialMessage = (data) => {
-    serialMessage.current = data
-  }
-
   /* useEffect rendering section */
   useEffect(() => {
-    socket.on("hello", (arg) => {
-      console.log("connected:  ", arg);
-      setSerialMessage(arg);
-    })
-
-  }, [serialMessage])
-
-  useEffect(() => {
     runFacemesh();
-    socket.emit("trigger", currentImageIndex)
   }, []);
 
   useEffect(() => {
