@@ -66,6 +66,6 @@ const appRoutes = createBrowserRouter([
 //    },
 //  },
 // TODO: is hydrationData working??
-], { hydrationData: <>anladen</> });
+], { hydrationData: <>routes loading.</> });
 
 export default appRoutes;

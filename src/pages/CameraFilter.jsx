@@ -1,15 +1,11 @@
-// TODO: screenshot capability
-//  imagemagick from script, ran on server, saved to assets/screenshots
-// TODO: posting them to home page carousel
 // TODO: refine each image position
 // TODO: refresh button
 
 import * as tf from "@tensorflow/tfjs"; /* Appears as not read but is VERY IMPORTANT */
 import * as facemesh from "@tensorflow-models/face-landmarks-detection";
-import { useRef, useEffect, useState } from "react";
 import Webcam from "react-webcam";
+import { useRef, useEffect, useState } from "react";
 import { NavLink } from "react-router";
-import { io } from "socket.io-client";
 
 const HEIGHT = 480;
 const WIDTH = 640;
@@ -27,10 +23,6 @@ const hairdoImages = Object.keys(hairdoModules)
     return numA - numB;
   })
   .map((key) => hairdoModules[key].default || hairdoModules[key]);
-
-
-/* Socket IO connection */
-const socket = io("http://localhost:8081");
 
 /* Main Component */
 export default function CameraFilter() {
@@ -67,7 +59,6 @@ export default function CameraFilter() {
         faceRef.current = await net.estimateFaces(video);
       } catch (err) {
         console.log("fetch error: ", err);
-        ``;
       }
     }
   };
@@ -227,8 +218,6 @@ export default function CameraFilter() {
   return (
     <>
       <div className="camera-page-container">
-        <div className="booger">
-          {" "}
           <Webcam
             ref={webcamRef}
             style={{
@@ -252,7 +241,6 @@ export default function CameraFilter() {
               height: HEIGHT,
             }}
           ></canvas>
-        </div>
         <p>{serialMessage.current}</p>
         <h2 className="home-title">Select Your Style</h2>
         <div className="product-image-container">
@@ -280,7 +268,7 @@ export default function CameraFilter() {
         </div>
 
         <div className="camera-footer">
-          <NavLink to="/" className="home-link">
+          <NavLink to="/" className="home-link" viewTransition>
             Home
           </NavLink>
         </div>

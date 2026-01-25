@@ -1,0 +1,54 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "question": "What's your top hair goal today?",
+      "sampleAnswers": [
+        "Make my hair look thicker and healthier",
+        "Find a product with a great scent",
+        "Add texture and a natural, lived-in style",
+        "Get strong hold that lasts all day"
+      ]
+    },
+    {
+      "id": 2,
+      "question": "What does your hair need most right now?",
+      "sampleAnswers": [
+        "Hydration and fullness",
+        "A fresh scent boost",
+        "Shape, grip, and definition",
+        "Control and smoothness"
+      ]
+    },
+    {
+      "id": 3,
+      "question": "How do you like your hair to feel?",
+      "sampleAnswers": [
+        "Soft and fuller",
+        "Light with a noticeable scent",
+        "Matte and touchable",
+        "Sleek or structured"
+      ]
+    },
+    {
+      "id": 4,
+      "question": "What's your everyday styling routine like?",
+      "sampleAnswers": [
+        "Quick—something that improves my hair overall",
+        "Simple—just want to smell good and look put-together",
+        "Easy—run product through and go",
+        "Intentional—comb, style, set"
+      ]
+    },
+    {
+      "id": 5,
+      "question": "What finish do you prefer?",
+      "sampleAnswers": [
+        "Natural and healthy",
+        "Light and clean",
+        "Matte with texture",
+        "Shiny or polished"
+      ]
+    }
+  ]
+}

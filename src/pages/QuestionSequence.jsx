@@ -3,7 +3,7 @@ import { Form, NavLink } from "react-router";
 import { proxy, useSnapshot } from "valtio";
 import questionnaireState from "../state/questionnaireState.js";
 import { updateAnswerWeight } from "../components/updateAnswerWeight.js";
-import * as questions from "../database/mens-questions.json";
+import * as questions from "../assets/mens-questions.json";
 import "../index.css";
 
 // question-answer store

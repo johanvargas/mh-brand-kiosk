@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "../index.css";
 import { useNavigate, NavLink } from "react-router";
+import "../index.css";
 
 const Menu = () => {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ const Menu = () => {
         >
           {selectedOption ? "Go" : "Select An Option"}
         </button>
-        <NavLink to="/" className="menu-home-link">Home</NavLink>
+        <NavLink to="/" className="menu-home-link" viewTransition>Home</NavLink>
       </div>
     </>
   )
