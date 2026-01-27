@@ -33,8 +33,8 @@ export default function Home() {
 
     return () => clearInterval(interval);
   }, [isPaused]);
+
   //reset the state-questionnaire
-  //
   //button needs to reset the values in the state-questionnaire before going to next page (quiz)
 
   return (
@@ -61,7 +61,7 @@ export default function Home() {
         </h1>
         <button 
           className="home-cta-button"
-          onClick={() => { navigate("/menu", { viewTransition: true }) }}
+          onClick={() => navigate("/menu", { viewTransition: true }) }
         >
           Start Here
         </button>

@@ -1,25 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { useActionData, NavLink } from "react-router";
+import { useActionData, NavLink, redirect } from "react-router";
 import products from "../database/products.js";
 import { io } from "socket.io-client";
 
 /* Socket IO connection */
 // IP needs to be the IP of the pi with the http server
-//const socket = io("http://localhost:8081");
-const socket = io("http://192.168.0.195:8081");
+const socket = io("http://localhost:8081");
+//const socket = io("http://192.168.0.195:8081");
 
 export default function Results() {
   const actData = useActionData();
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
   const currentProduct = products[currentProductIndex] || products[0];
+  const [idempote, setIdempote] = useState(0);
 
   useEffect(() => {
     setCurrentProductIndex(actData.selection);
   }, []);
 
+
+  const updateIdem = () => {
+    setIdempote(prev => prev + 1)
+
+  }
+
   const setCubby = (cub) => {
-    console.log("cubby being iluminated: #", cub);
+    console.log(`cubby #${cub} illuminated`);
+    console.log("idempotent item count: ", idempote);
+    updateIdem();
     socket.emit("trigger", cub);
+
+    //not working, this isn't a component, just a function
+    if (idempote > 0) redirect("home")
   };
 
   return (
@@ -44,8 +56,9 @@ export default function Results() {
       <button
         className="results-cta-button"
         onClick={() => setCubby(currentProductIndex)}
+
       >
-        See Product at Shelf
+        {idempote > 0 ? "Go Back Home" : "See Product at Shelf"}
       </button>
       <div className="results-links-container">
         <NavLink to="/" className="results-home-link" viewTransition>

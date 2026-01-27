@@ -65,18 +65,23 @@ const triggerLight = (data) => {
 };
 
 const triggerLight_DEV = (data) => {
+  // turns on led with two ramp ups, then turns off led
   switch (data) {
     case 0:
       setTimeout(() => sendCommand(`G005B[A 0 25 22 0 50 12]`), 50);
+      setTimeout(() => sendCommand("G005B[A 0 0 1]"), 10000);
       break;
     case 1:
       setTimeout(() => sendCommand(`G005B[A 2 25 22 2 50 12]`), 50);
+      setTimeout(() => sendCommand("G005B[A 0 0 1]"), 10000);
       break;
     case 2:
       setTimeout(() => sendCommand(`G005B[A 1 25 22 1 50 12]`), 50);
+      setTimeout(() => sendCommand("G005B[A 0 0 1]"), 10000);
       break;
     case 3:
       setTimeout(() => sendCommand(`G005B[A 3 25 22 3 50 12]`), 50);
+      setTimeout(() => sendCommand("G005B[A 0 0 1]"), 10000);
       break;
     default:
       setTimeout(() => sendCommand(`G005B[A 0 0 22]`), 50);
@@ -99,11 +104,13 @@ io.on("connection", (socket) => {
 /* SERIAL PORT SERVER */
 import { ReadlineParser } from "@serialport/parser-readline";
 import { SerialPort } from "serialport";
-//import { MockBinding } from "@serialport/binding-mock";
 
-//MockBinding.createPort('/dev/null', { echo: true, record: true })
-//const serial_port = new SerialPort({ binding: MockBinding, path: "/dev/null",baudRate: 115200 });
-const serial_port = new SerialPort({ path: "/dev/ttyUSB0", baudRate: 115200 });
+/* Mock Seria Port Binding */
+import { MockBinding } from "@serialport/binding-mock";
+MockBinding.createPort('/dev/null', { echo: true, record: true })
+const serial_port = new SerialPort({ binding: MockBinding, path: "/dev/null",baudRate: 115200 });
+
+//const serial_port = new SerialPort({ path: "/dev/ttyUSB0", baudRate: 115200 });
 console.log(serial_port);
 
 serial_port.on("open", (socket) => {
