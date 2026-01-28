@@ -37,7 +37,6 @@ export default function CameraFilter() {
   const [rotationZ, setRotationZ] = useState(0); // z-axis rotation in degrees
   const [rotationX, setRotationX] = useState(0); // x-axis rotation in degrees
   const [rotationY, setRotationY] = useState(0); // y-axis rotation in degrees
-  const serialMessage = useRef("no current serial message");
   
   const detect = async (net) => {
     if (
@@ -228,7 +227,6 @@ export default function CameraFilter() {
               height: HEIGHT,
             }}
           ></canvas>
-        <p>{serialMessage.current}</p>
         <h2 className="home-title">Select Your Style</h2>
         <div className="product-image-container">
           <button

@@ -109,7 +109,7 @@ h1 {
   font-size: 1.6rem;
   font-weight: 400;
   color: #000;
-  margin: 1em 0 0 0;
+  margin: 1em 0 1em 0;
   line-height: 1.6;
   max-width: 500px;
 }
@@ -123,7 +123,7 @@ h1 {
 
 .product-image {
   max-width: 100%;
-  max-height: 300px;
+  max-height: 25em;
   object-fit: contain;
 }
 
@@ -151,15 +151,15 @@ h1 {
   background: #000;
   color: #fff;
   border: none;
-  border-radius: 35px;
-  padding: 20px 50px;
+  border-radius: 60px;
+  padding: 1.5em 2em;
   font-size: 1.3rem;
   font-weight: 800;
   cursor: pointer;
   transition: all 0.5s ease;
   margin: 2em auto;
   display: block;
-  box-sizing: border-box;
+  min-height: 138px;
 }
 
 .results-cta-button:hover {
@@ -174,8 +174,7 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5em;
-  margin-top: 3em;
+  margin-top: 5em;
   width: 100%;
 }
 
@@ -183,7 +182,7 @@ h1 {
 .results-links-container .results-home-link,
 .results-links-container .results-camera-link {
   margin-top: 0;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 600;
   color: #000;
   text-decoration: underline;
@@ -213,16 +212,15 @@ h1 {
 }
 
 .results-links-separator {
-  font-size: 1rem;
+  font-size: 2rem;
   color: #000;
-  margin: 0 0.2em;
 }
 
 /* Question Container */
 
 .question-container {
   width: calc(100vw * 0.8);
-  height: calc(100vh * 0.7);
+  height: calc(100vh * 0.6);
   background: transparent;
   margin-top: 2em;
   flex: 1;
@@ -241,7 +239,7 @@ h1 {
 }
 
 .title {
-  font-size: 4rem;
+  font-size: 3.7rem;
   color: #000;
   position: relative;
   display: flex;
@@ -301,14 +299,15 @@ h1 {
   display: block;
   background: #000;
   color: #fff;
-  font-size: 1.1em;
+  font-size: 1.2em;
   border-radius: 60px;
-  padding: 2em 2em;
+  padding: 1.5em 2em;
   cursor: pointer;
   transition: all 0.5s ease;
   width: 100%;
   max-width: 260px;
-  margin: 12.6em 0 4.4em 0;
+  min-height: 138px;
+  margin: 10em 0 4.5em 0;
 }
 
 .menu-go-button:hover:not(:disabled) {
@@ -392,16 +391,16 @@ h1 {
 }
 
 .question-text {
-  font-size: 1.6rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 500;
   color: #000;
   text-align: center;
   flex-shrink: 0;
   width: 80%;
   max-width: 100%;
   box-sizing: border-box;
-  height: calc(1060px * 0.10);
-  min-height: calc(1060px * 0.13);
+  height: calc(100vh * 0.10);
+  min-height: calc(100vh * 0.13);
   max-height: calc(1060px * 0.15);
   display: flex;
   align-items: center;
@@ -470,8 +469,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 100px;
-  margin: 0 0 1em 0 ;
+  margin: 1em 0 1em 0 ;
 }
 
 .nav-button.next-button {
@@ -484,9 +482,10 @@ h1 {
   cursor: pointer;
   transition: all 0.5s ease;
   touch-action: manipulation;
-  padding: 1em 1em;
+  padding: 1.5em 2em;
   width: 100%;
   max-width: 260px;
+  max-height: 145x;
 }
 
 .nav-button.next-button:hover:not(:disabled),
@@ -567,7 +566,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 2em 1em;
+  padding: 2.5em 1em;
   min-height: 0;
   box-sizing: border-box;
   height: calc(100vh * 0.6);
@@ -602,13 +601,13 @@ h1 {
   background: #000;
   color: #fff;
   border-radius: 60px;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   cursor: pointer;
   transition: all 0.5s ease;
   width: 100%;
   max-width: 270px;
   text-align: center;
-  margin-top: 2.8em;
+  margin-top: 3em;
 }
 
 .home-cta-button:hover {
@@ -624,7 +623,7 @@ h1 {
   font-weight: 700;
   color: #000;
   text-align: center;
-  margin-top: 3em;
+  margin-top: 3.5em;
 }
 
 /* Camera Filter Page Styles */

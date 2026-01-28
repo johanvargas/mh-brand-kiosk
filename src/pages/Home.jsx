@@ -26,9 +26,7 @@ export default function Home() {
     if (isPaused) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => 
-        (prevIndex + 1) % carouselImages.length
-      );
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselImages.length);
     }, 4000); // Change image every 4 seconds
 
     return () => clearInterval(interval);
@@ -39,7 +37,7 @@ export default function Home() {
 
   return (
     <>
-      <div 
+      <div
         className="home-image-section"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -49,23 +47,29 @@ export default function Home() {
             key={index}
             src={image.src}
             alt={image.alt}
-            className={`home-image ${index === currentIndex ? 'active' : ''}`}
+            className={`home-image ${index === currentIndex ? "active" : ""}`}
           />
         ))}
       </div>
       <div className="home-content-section">
         <h1 className="home-title">
-          Find Your<br />
-          Men's Styling<br />
+          Find Your
+          <br />
+          Men's Styling
+          <br />
           Match
         </h1>
-        <button 
+
+        <button
           className="home-cta-button"
-          onClick={() => navigate("/menu", { viewTransition: true }) }
+          onClick={() => navigate("/menu", { viewTransition: true })}
         >
           Start Here
         </button>
-        <p className="home-footer-link">Find more at Walmart.com</p>
+
+        <div>
+          <p className="home-footer-link h-10">Find more at Walmart.com</p>
+        </div>
       </div>
     </>
   );
