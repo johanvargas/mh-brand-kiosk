@@ -12,9 +12,9 @@ const Menu = () => {
 
   const handleGoClick = () => {
     if (selectedOption === "quiz") {
-      navigate("/quiz");
+      navigate("/quiz", { viewTransition: true });
     } else if (selectedOption === "camera") {
-      navigate("/camera");
+      navigate("/camera", { viewTransition: true });
     }
   };
 
@@ -43,7 +43,7 @@ const Menu = () => {
         </div>
         <button
           type="button"
-          className="menu-go-button"
+          className="menu-go-button text-pretty"
           onClick={handleGoClick}
           disabled={!selectedOption}
         >

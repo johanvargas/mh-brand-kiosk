@@ -64,7 +64,7 @@ export default function Results() {
         <NavLink to="/" className="results-home-link" viewTransition>
           Home
         </NavLink>
-        <span className="results-links-separator">|</span>
+        <span className="results-links-separator">&nbsp;|&nbsp;</span>
         <NavLink to="/camera" className="results-camera-link" viewTransition>
           Fun with Hair Styles
         </NavLink>

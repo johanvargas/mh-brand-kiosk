@@ -9,13 +9,14 @@ import { fileURLToPath } from "url";
 const app = express();
 const server = new HttpServer(app);
 const io = new SocketIOServer(server, {
-  cors: { origin: "*", methods: ["GET", "POST"] },
+  //cors: { origin: "http://localhost:*", methods: ["GET", "POST"] },
+  cors: { origin: "http://localhost:5173", methods: ["GET", "POST"] },
 });
 const port = 8081;
 
 app.use(cors());
 server.listen(port, () =>
-  console.log("http server - mh-kiosk - running on port " + port),
+  console.log("http server - MH-KIOSK - running on port " + port),
 );
 
 const filename = fileURLToPath(import.meta.url);

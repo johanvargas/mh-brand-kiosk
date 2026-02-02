@@ -138,7 +138,7 @@ const QuestionSequence = () => {
         <NavLink to="/" className="home-link">
           Home
         </NavLink>
-        <span className="results-links-separator">|</span>
+        <span className="results-links-separator">&nbsp;|&nbsp;</span>
         <NavLink to="/camera" className="results-camera-link">
           Fun with Hair Styles
         </NavLink>
