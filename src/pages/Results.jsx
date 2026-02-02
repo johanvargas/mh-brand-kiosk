@@ -3,6 +3,22 @@ import { useActionData, NavLink, redirect } from "react-router";
 import products from "../database/products.js";
 import { io } from "socket.io-client";
 
+// Import images from each product folder
+const imageModules = import.meta.glob('../assets/*/PNGs/*.png', { eager: true });
+
+// Organize images by folder index
+const productImages = {};
+Object.entries(imageModules).forEach(([path, module]) => {
+  const match = path.match(/\/assets\/(\d+)\/PNGs\//);
+  if (match) {
+    const folderIndex = parseInt(match[1]);
+    if (!productImages[folderIndex]) {
+      productImages[folderIndex] = [];
+    }
+    productImages[folderIndex].push(module.default);
+  }
+});
+
 /* Socket IO connection */
 // IP needs to be the IP of the pi with the http server
 const socket = io("http://localhost:8081");
@@ -13,10 +29,27 @@ export default function Results() {
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
   const currentProduct = products[currentProductIndex] || products[0];
   const [idempote, setIdempote] = useState(0);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+
+  // Get images for current product
+  const currentImages = productImages[currentProductIndex] || [];
 
   useEffect(() => {
     setCurrentProductIndex(actData.selection);
   }, []);
+
+  // Reset carousel when product changes
+  useEffect(() => {
+    setCarouselIndex(0);
+  }, [currentProductIndex]);
+
+  const nextImage = () => {
+    setCarouselIndex((prev) => (prev + 1) % currentImages.length);
+  };
+
+  const prevImage = () => {
+    setCarouselIndex((prev) => (prev - 1 + currentImages.length) % currentImages.length);
+  };
 
 
   const updateIdem = () => {
@@ -46,11 +79,36 @@ export default function Results() {
         </div>
 
         <div className="product-image-container">
-          <img
-            src={currentProduct.image || "/stand-in-1.png"}
-            alt={currentProduct.name}
-            className="product-image"
-          />
+          {currentImages.length > 0 ? (
+            <div className="carousel">
+              <button className="carousel-btn carousel-btn-prev" onClick={prevImage}>
+                &#8249;
+              </button>
+              <img
+                src={currentImages[carouselIndex]}
+                alt={`${currentProduct.name} ${carouselIndex + 1}`}
+                className="product-image"
+              />
+              <button className="carousel-btn carousel-btn-next" onClick={nextImage}>
+                &#8250;
+              </button>
+              <div className="carousel-dots">
+                {currentImages.map((_, idx) => (
+                  <span
+                    key={idx}
+                    className={`carousel-dot ${idx === carouselIndex ? 'active' : ''}`}
+                    onClick={() => setCarouselIndex(idx)}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <img
+              src={currentProduct.image || "/stand-in-1.png"}
+              alt={currentProduct.name}
+              className="product-image"
+            />
+          )}
         </div>
       </div>
       <button

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import image1 from "../assets/carousel_mens/AdobeStock_220536548.jpeg";
-import image2 from "../assets/carousel_mens/AdobeStock_282261700.jpeg";
-import image3 from "../assets/carousel_mens/AdobeStock_287429773.jpeg";
-import image4 from "../assets/carousel_mens/AdobeStock_303333387.jpeg";
+import image1 from "../assets/carousel_mens/Men's Passive Image 1.png";
+import image2 from "../assets/carousel_mens/Men's Passive Image 2.png";
+import image3 from "../assets/carousel_mens/Men's Passive Image 3.png";
+import image4 from "../assets/carousel_mens/Men's Passive Image 4.png";
+import image5 from "../assets/carousel_mens/Men's Passive Image 5.png";
 import { resetQuestionnaireState } from "../state/questionnaireState.js";
 
 const carouselImages = [
@@ -11,6 +12,7 @@ const carouselImages = [
   { src: image2, alt: "Men's styling image 2" },
   { src: image3, alt: "Men's styling image 3" },
   { src: image4, alt: "Men's styling image 4" },
+  { src: image5, alt: "Men's styling image 5" },
 ];
 
 export default function Home() {
