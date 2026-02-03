@@ -123,7 +123,7 @@ h1 {
 }
 
 .product-image {
-  width: 50vw;
+  width: 70vw;
   max-height: 20em;
   object-fit: contain;
 }
@@ -209,14 +209,14 @@ h1 {
   color: #fff;
   border: none;
   border-radius: 60px;
-  padding: 1.5em 2em;
+  padding: 1.5em 1.5em;
   font-size: 1.3rem;
   font-weight: 800;
   cursor: pointer;
   transition: all 0.5s ease;
-  margin: 2em auto 0em auto;
+  margin: 5em auto 3em auto;
   display: block;
-  min-height: 138px;
+  min-height: 120px;
 }
 
 .results-cta-button:hover {
@@ -231,7 +231,7 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 5em;
+  margin-top: 5.2.2em;
   width: 100%;
 }
 
@@ -277,7 +277,7 @@ h1 {
 
 .question-container {
   width: calc(100vw * 0.8);
-  height: calc(100vh * 0.6);
+  height: calc(100vh * 0.63);
   background: transparent;
   margin-top: 2em;
   flex: 1;
@@ -358,13 +358,13 @@ h1 {
   color: #fff;
   font-size: 1.2em;
   border-radius: 60px;
-  padding: 1.5em 2em;
+  padding: 1.5em 1.5em;
   cursor: pointer;
   transition: all 0.5s ease;
   width: 100%;
   max-width: 260px;
-  min-height: 138px;
-  margin: 11.1em 0 4.5em 0;
+  min-height: 120px;
+  margin: 12em 0 4.5em 0;
 }
 
 .menu-go-button:hover:not(:disabled) {
@@ -526,12 +526,11 @@ h1 {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  min-height: 30em;
   margin: 2em 0 4em 0 ;
 }
 
 .nav-button.next-button {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 700;
   border-radius: 60px;
   border: none;
@@ -540,10 +539,10 @@ h1 {
   cursor: pointer;
   transition: all 0.5s ease;
   touch-action: manipulation;
-  padding: 1.5em 2em;
+  padding: 1.5em 1.5em;
   width: 100%;
   max-width: 260px;
-  max-height: 145x;
+  max-height: 140px;
 }
 
 .nav-button.next-button:hover:not(:disabled),
