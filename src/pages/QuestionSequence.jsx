@@ -3,6 +3,7 @@ import { Form, NavLink } from "react-router";
 import { proxy, useSnapshot } from "valtio";
 import questionnaireState from "../state/questionnaireState.js";
 import { updateAnswerWeight } from "../components/updateAnswerWeight.js";
+import useInactivityTimeout from "../components/useInactivityTimeout.js";
 import * as questions from "../assets/mens-questions.json";
 import "../index.css";
 
@@ -10,6 +11,7 @@ import "../index.css";
 const quest = proxy(questions);
 
 const QuestionSequence = () => {
+  useInactivityTimeout(30000);
   const snap = useSnapshot(quest);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   let questionSet = snap.questions[questionnaireState.currentQuestionIndex];

@@ -6,6 +6,7 @@ import * as facemesh from "@tensorflow-models/face-landmarks-detection";
 import Webcam from "react-webcam";
 import { useRef, useEffect, useState } from "react";
 import { NavLink } from "react-router";
+import useInactivityTimeout from "../components/useInactivityTimeout.js";
 
 const HEIGHT = 480;
 const WIDTH = 640;
@@ -26,6 +27,7 @@ const hairdoImages = Object.keys(hairdoModules)
 
 /* Main Component */
 export default function CameraFilter() {
+  useInactivityTimeout(30000);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const faceRef = useRef(null);

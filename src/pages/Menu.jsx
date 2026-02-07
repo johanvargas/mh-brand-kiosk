@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router";
+import useInactivityTimeout from "../components/useInactivityTimeout.js";
 import "../index.css";
 
 const Menu = () => {
+  useInactivityTimeout(30000);
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState(null);
 

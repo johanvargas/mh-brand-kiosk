@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useActionData, NavLink, redirect } from "react-router";
 import products from "../database/products.js";
 import { io } from "socket.io-client";
+import useInactivityTimeout from "../components/useInactivityTimeout.js";
 
 // Import images from each product folder
 const imageModules = import.meta.glob('../assets/*/PNGs/*.png', { eager: true });
@@ -25,6 +26,7 @@ const socket = io("http://localhost:8081");
 //const socket = io("http://192.168.0.195:8081");
 
 export default function Results() {
+  useInactivityTimeout(30000);
   const actData = useActionData();
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
   const currentProduct = products[currentProductIndex] || products[0];
