@@ -714,6 +714,50 @@ h1 {
   box-sizing: border-box;
 }
 
+/* See Products Button (Camera page) */
+.see-products-button {
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 60px;
+  padding: 1em 2em;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 1em 0;
+  transition: all 0.5s ease;
+  animation: fadeIn 0.5s ease;
+}
+
+.see-products-button:hover {
+  background: #333;
+}
+
+.see-products-button:active {
+  transform: scale(0.96);
+}
+
+/* Product Pairing Carousel (Camera page) */
+.product-pairing-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  margin: 1em 0;
+  animation: fadeIn 0.4s ease;
+}
+
+.product-pairing-image {
+  max-width: 50vw;
+  max-height: 12em;
+  object-fit: contain;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 .camera-footer {
   display: flex;
   align-items: center;

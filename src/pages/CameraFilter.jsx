@@ -16,14 +16,34 @@ const hairdoModules = import.meta.glob("../assets/PNGs/AR_Hairstyles_*.png", {
   eager: true,
 });
 
-// Convert to sorted array by extracting number from filename
-const hairdoImages = Object.keys(hairdoModules)
-  .sort((a, b) => {
-    const numA = parseInt(a.match(/\d+/)?.[0] || "0");
-    const numB = parseInt(b.match(/\d+/)?.[0] || "0");
-    return numA - numB;
+// Convert to sorted array of { src, styleNum } so we can map to product folders
+const hairdoEntries = Object.keys(hairdoModules)
+  .map((key) => {
+    const styleNum = parseInt(key.match(/AR_Hairstyles_(\d+)/)?.[1] || "0");
+    return { src: hairdoModules[key].default || hairdoModules[key], styleNum };
   })
-  .map((key) => hairdoModules[key].default || hairdoModules[key]);
+  .sort((a, b) => a.styleNum - b.styleNum);
+
+// Keep a flat array for backward compat
+const hairdoImages = hairdoEntries.map((e) => e.src);
+
+// Import product images from AR Hair Prod Pairings and group by style number
+const productModules = import.meta.glob(
+  "../assets/AR Hair Prod Pairings/**/*.png",
+  { eager: true },
+);
+
+const productImagesByStyle = {};
+Object.entries(productModules).forEach(([path, mod]) => {
+  const match = path.match(/Style\s+(\d+)\//);
+  if (match) {
+    const styleNum = parseInt(match[1]);
+    if (!productImagesByStyle[styleNum]) {
+      productImagesByStyle[styleNum] = [];
+    }
+    productImagesByStyle[styleNum].push(mod.default || mod);
+  }
+});
 
 /* Main Component */
 export default function CameraFilter() {
@@ -39,6 +59,12 @@ export default function CameraFilter() {
   const [rotationZ, setRotationZ] = useState(0); // z-axis rotation in degrees
   const [rotationX, setRotationX] = useState(0); // x-axis rotation in degrees
   const [rotationY, setRotationY] = useState(0); // y-axis rotation in degrees
+
+  // Product pairing state
+  const [showProductButton, setShowProductButton] = useState(false);
+  const [showProducts, setShowProducts] = useState(false);
+  const [productIndex, setProductIndex] = useState(0);
+  const productTimerRef = useRef(null);
   
   const detect = async (net) => {
     if (
@@ -176,6 +202,19 @@ export default function CameraFilter() {
 
   useEffect(() => {
     hairdoRef.current = hairdoImages[currentImageIndex];
+
+    // Reset product UI and start 5-second timer whenever hairstyle changes
+    setShowProductButton(false);
+    setShowProducts(false);
+    setProductIndex(0);
+    if (productTimerRef.current) clearTimeout(productTimerRef.current);
+    productTimerRef.current = setTimeout(() => {
+      setShowProductButton(true);
+    }, 5000);
+
+    return () => {
+      if (productTimerRef.current) clearTimeout(productTimerRef.current);
+    };
   }, [currentImageIndex]);
 
   useEffect(() => {
@@ -200,6 +239,22 @@ export default function CameraFilter() {
   const handleNextImage = () => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === hairdoImages.length - 1 ? 0 : prevIndex + 1,
+    );
+  };
+
+  // Product carousel helpers
+  const currentStyleNum = hairdoEntries[currentImageIndex]?.styleNum;
+  const currentProducts = productImagesByStyle[currentStyleNum] || [];
+
+  const handlePrevProduct = () => {
+    setProductIndex((prev) =>
+      prev === 0 ? currentProducts.length - 1 : prev - 1,
+    );
+  };
+
+  const handleNextProduct = () => {
+    setProductIndex((prev) =>
+      prev === currentProducts.length - 1 ? 0 : prev + 1,
     );
   };
 
@@ -253,6 +308,47 @@ export default function CameraFilter() {
             ›
           </button>
         </div>
+
+        {/* Product pairing section */}
+        {showProductButton && !showProducts && currentProducts.length > 0 && (
+          <button
+            type="button"
+            className="see-products-button"
+            onClick={() => setShowProducts(true)}
+          >
+            See Paired Products
+          </button>
+        )}
+
+        {showProducts && currentProducts.length > 0 && (
+          <div className="product-pairing-carousel">
+            {currentProducts.length > 1 && (
+              <button
+                type="button"
+                className="carousel-button carousel-button-left"
+                onClick={handlePrevProduct}
+                aria-label="Previous product"
+              >
+                ‹
+              </button>
+            )}
+            <img
+              src={currentProducts[productIndex]}
+              alt={`Product ${productIndex + 1} for Style ${currentStyleNum}`}
+              className="product-pairing-image"
+            />
+            {currentProducts.length > 1 && (
+              <button
+                type="button"
+                className="carousel-button carousel-button-right"
+                onClick={handleNextProduct}
+                aria-label="Next product"
+              >
+                ›
+              </button>
+            )}
+          </div>
+        )}
 
         <div className="camera-footer">
           <NavLink to="/" className="home-link" viewTransition>

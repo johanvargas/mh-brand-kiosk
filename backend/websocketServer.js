@@ -34,6 +34,8 @@ const triggerLight = (data) => {
       setTimeout(() => sendCommand(`G005B[B 0 0 22]`), 100);
       setTimeout(() => sendCommand(`G111B[D 0 0 22]`), 150);
       setTimeout(() => sendCommand(`G111B[C 0 0 22]`), 200);
+
+      setTimeout(() => sendCommand(`G005B[A 0 0 22]`), 5000);
       break;
     case 1:
       setTimeout(() => sendCommand(`G005B[B 0 25 22 0 50 12]`), 50);
@@ -41,6 +43,8 @@ const triggerLight = (data) => {
       setTimeout(() => sendCommand(`G005B[A 0 0 22]`), 100);
       setTimeout(() => sendCommand(`G111B[D 0 0 22]`), 150);
       setTimeout(() => sendCommand(`G111B[C 0 0 22]`), 200);
+
+      setTimeout(() => sendCommand(`G005B[B 0 0 22]`), 5000);
       break;
     case 2:
       setTimeout(() => sendCommand(`G111B[D 0 25 22 0 50 12]`), 50);
@@ -48,6 +52,8 @@ const triggerLight = (data) => {
       setTimeout(() => sendCommand(`G005B[A 0 0 22]`), 100);
       setTimeout(() => sendCommand(`G005B[B 0 0 22]`), 150);
       setTimeout(() => sendCommand(`G111B[C 0 0 22]`), 200);
+
+      setTimeout(() => sendCommand(`G111B[D 0 0 22]`), 5000);
       break;
     case 3:
       setTimeout(() => sendCommand(`G111B[C 0 25 22 0 50 12]`), 50);
@@ -55,6 +61,8 @@ const triggerLight = (data) => {
       setTimeout(() => sendCommand(`G005B[A 0 0 22]`), 100);
       setTimeout(() => sendCommand(`G005B[B 0 0 22]`), 150);
       setTimeout(() => sendCommand(`G111B[D 0 0 22]`), 200);
+
+      setTimeout(() => sendCommand(`G111B[C 0 0  22]`), 50);
       break;
     default:
       setTimeout(() => sendCommand(`G005B[A 0 0 22]`), 50);
@@ -98,7 +106,7 @@ io.on("connection", (socket) => {
   // Received messages
   socket.on("trigger", (data) => {
     console.log("trigger number; ", data);
-    triggerLight_DEV(data);
+    triggerLight(data);
   });
 });
 
