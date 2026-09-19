@@ -5,19 +5,19 @@ import { useNavigate, useLocation } from "react-router";
  * Redirects to the home page after `timeout` ms of inactivity.
  * Activity = any pointer, touch, keyboard, or scroll event.
  */
-export default function useInactivityTimeout(timeout = 30000) {
+export default function useInactivityTimeout(timeout: number = 30000): void {
   const navigate = useNavigate();
   const location = useLocation();
-  const timerRef = useRef(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     // Don't run on the home page
     if (location.pathname === "/") return;
 
-    const resetTimer = () => {
+    const resetTimer = (): void => {
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
-        navigate("/", { viewTransition: true });
+        void navigate("/", { viewTransition: true });
       }, timeout);
     };
 
@@ -28,7 +28,7 @@ export default function useInactivityTimeout(timeout = 30000) {
       "scroll",
       "touchstart",
       "touchmove",
-    ];
+    ] as const;
 
     events.forEach((evt) => window.addEventListener(evt, resetTimer, { passive: true }));
 

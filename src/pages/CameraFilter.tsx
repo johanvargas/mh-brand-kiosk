@@ -1,39 +1,45 @@
 // TODO: refine each image position
 // TODO: refresh button
 
-import * as tf from "@tensorflow/tfjs"; /* Appears as not read but is VERY IMPORTANT */
+import "@tensorflow/tfjs"; /* Appears as not read but is VERY IMPORTANT */
 import * as facemesh from "@tensorflow-models/face-landmarks-detection";
 import Webcam from "react-webcam";
 import { useRef, useEffect, useState } from "react";
 import { NavLink } from "react-router";
-import useInactivityTimeout from "../components/useInactivityTimeout.js";
+import useInactivityTimeout from "../components/useInactivityTimeout";
 
 const HEIGHT = 480;
 const WIDTH = 640;
 
+interface HairdoEntry {
+  src: string;
+  styleNum: number;
+}
+
 // Dynamically import all hairdo images using Vite's import.meta.glob()
-const hairdoModules = import.meta.glob("../assets/PNGs/AR_Hairstyles_*.png", {
-  eager: true,
-});
+const hairdoModules = import.meta.glob<{ default: string }>(
+  "../assets/PNGs/AR_Hairstyles_*.png",
+  { eager: true },
+);
 
 // Convert to sorted array of { src, styleNum } so we can map to product folders
-const hairdoEntries = Object.keys(hairdoModules)
+const hairdoEntries: HairdoEntry[] = Object.keys(hairdoModules)
   .map((key) => {
     const styleNum = parseInt(key.match(/AR_Hairstyles_(\d+)/)?.[1] || "0");
-    return { src: hairdoModules[key].default || hairdoModules[key], styleNum };
+    return { src: hairdoModules[key].default, styleNum };
   })
   .sort((a, b) => a.styleNum - b.styleNum);
 
 // Keep a flat array for backward compat
-const hairdoImages = hairdoEntries.map((e) => e.src);
+const hairdoImages: string[] = hairdoEntries.map((e) => e.src);
 
 // Import product images from AR Hair Prod Pairings and group by style number
-const productModules = import.meta.glob(
+const productModules = import.meta.glob<{ default: string }>(
   "../assets/AR Hair Prod Pairings/**/*.png",
   { eager: true },
 );
 
-const productImagesByStyle = {};
+const productImagesByStyle: Record<number, string[]> = {};
 Object.entries(productModules).forEach(([path, mod]) => {
   const match = path.match(/Style\s+(\d+)\//);
   if (match) {
@@ -41,17 +47,17 @@ Object.entries(productModules).forEach(([path, mod]) => {
     if (!productImagesByStyle[styleNum]) {
       productImagesByStyle[styleNum] = [];
     }
-    productImagesByStyle[styleNum].push(mod.default || mod);
+    productImagesByStyle[styleNum].push(mod.default);
   }
 });
 
 /* Main Component */
 export default function CameraFilter() {
   useInactivityTimeout(30000);
-  const webcamRef = useRef(null);
-  const canvasRef = useRef(null);
-  const faceRef = useRef(null);
-  const hairdoRef = useRef(hairdoImages[0]);
+  const webcamRef = useRef<Webcam>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const faceRef = useRef<facemesh.Face[] | null>(null);
+  const hairdoRef = useRef<string>(hairdoImages[0]);
   const rotationZRef = useRef(0); // z-axis rotation in radians (roll)
   const rotationXRef = useRef(0); // x-axis rotation in radians (pitch)
   const rotationYRef = useRef(0); // y-axis rotation in radians (yaw)
@@ -64,12 +70,14 @@ export default function CameraFilter() {
   const [showProductButton, setShowProductButton] = useState(false);
   const [showProducts, setShowProducts] = useState(false);
   const [productIndex, setProductIndex] = useState(0);
-  const productTimerRef = useRef(null);
-  
-  const detect = async (net) => {
+  const productTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const detect = async (net: facemesh.FaceLandmarksDetector): Promise<void> => {
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
+      webcamRef.current.video !== null &&
+      canvasRef.current !== null &&
       webcamRef.current.video.readyState === 4
     ) {
       const video = webcamRef.current.video;
@@ -90,7 +98,7 @@ export default function CameraFilter() {
     }
   };
 
-  const runFacemesh = async () => {
+  const runFacemesh = async (): Promise<void> => {
     const net = await facemesh.createDetector(
       facemesh.SupportedModels.MediaPipeFaceMesh,
       {
@@ -100,33 +108,35 @@ export default function CameraFilter() {
       },
     );
 
-    const ctx = canvasRef.current.getContext("2d", {
+    const ctx = canvasRef.current?.getContext("2d", {
       willReadFrequently: true,
       desynchronized: true,
-      perserveDrawingBuffer: true,
     });
+
+    if (!ctx) return;
 
     // draw interval
     setInterval(() => {
       // HTMLCanvasElement.getContext() creates the 'canvas' to draw on
       requestAnimationFrame(() => {
         //console.log(faceRef.current)
-        if (faceRef.current.length != 0) {
-          //const topX = Math.floor(faceRef.current[0].keypoints[10].x);
-          const topY = Math.floor(faceRef.current[0].keypoints[10].y);
-          const topZ = Math.floor(faceRef.current[0].keypoints[10].z);
+        const faces = faceRef.current;
+        if (faces && faces.length != 0) {
+          //const topX = Math.floor(faces[0].keypoints[10].x);
+          const topY = Math.floor(faces[0].keypoints[10].y);
+          const topZ = Math.floor(faces[0].keypoints[10].z ?? 0);
 
-          const leftX = Math.floor(faceRef.current[0].keypoints[234].x);
-          const leftY = Math.floor(faceRef.current[0].keypoints[234].y);
-          const leftZ = Math.floor(faceRef.current[0].keypoints[234].z);
+          const leftX = Math.floor(faces[0].keypoints[234].x);
+          const leftY = Math.floor(faces[0].keypoints[234].y);
+          const leftZ = Math.floor(faces[0].keypoints[234].z ?? 0);
 
-          const rightX = Math.floor(faceRef.current[0].keypoints[454].x);
-          const rightY = Math.floor(faceRef.current[0].keypoints[454].y);
-          const rightZ = Math.floor(faceRef.current[0].keypoints[454].z);
+          const rightX = Math.floor(faces[0].keypoints[454].x);
+          const rightY = Math.floor(faces[0].keypoints[454].y);
+          const rightZ = Math.floor(faces[0].keypoints[454].z ?? 0);
 
-          //const bottomX = Math.floor(faceRef.current[0].keypoints[152].x);
-          const bottomY = Math.floor(faceRef.current[0].keypoints[152].y);
-          const bottomZ = Math.floor(faceRef.current[0].keypoints[152].z);
+          //const bottomX = Math.floor(faces[0].keypoints[152].x);
+          const bottomY = Math.floor(faces[0].keypoints[152].y);
+          const bottomZ = Math.floor(faces[0].keypoints[152].z ?? 0);
 
           const pitchDegrees =
             Math.atan2(bottomZ - topZ, bottomY - topY) * (180 / Math.PI);
@@ -137,20 +147,19 @@ export default function CameraFilter() {
 
           //console.log("degrees, ", rollDegrees, pitchDegrees, yawDegrees)
 
-          const faceWidth = Math.floor(faceRef.current[0].box.width);
-          const faceHeight = Math.floor(faceRef.current[0].box.height);
-          const x = Math.floor(faceRef.current[0].box.xMin);
-          const y = Math.floor(faceRef.current[0].box.yMin);
+          const faceWidth = Math.floor(faces[0].box.width);
+          const faceHeight = Math.floor(faces[0].box.height);
+          const x = Math.floor(faces[0].box.xMin);
+          const y = Math.floor(faces[0].box.yMin);
 
           // radions
           // X-axis rotation handlers (pitch - tilt forward/backward)
-          setRotationX((prev) => Math.min(pitchDegrees)); // Limit to prevent flipping
-          //setRotationX((prev) => Math.max(prev - 15, -89)); // Limit to prevent flipping
+          setRotationX(pitchDegrees);
 
           // Y-axis rotation handlers (yaw - turn left/right)
-          setRotationY((prev) => Math.max(yawDegrees)); // Limit to prevent flipping
+          setRotationY(yawDegrees);
 
-          setRotationZ((prev) => rollDegrees);
+          setRotationZ(rollDegrees);
 
           // drawing image
           const image = new Image();
@@ -191,13 +200,13 @@ export default function CameraFilter() {
 
     // detect interval
     setInterval(() => {
-      detect(net);
+      void detect(net);
     }, 1000 / 60);
   };
 
   /* useEffect rendering section */
   useEffect(() => {
-    runFacemesh();
+    void runFacemesh();
   }, []);
 
   useEffect(() => {
@@ -230,13 +239,13 @@ export default function CameraFilter() {
     rotationYRef.current = (rotationY * Math.PI) / 180;
   }, [rotationY]);
 
-  const handlePreviousImage = () => {
+  const handlePreviousImage = (): void => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? hairdoImages.length - 1 : prevIndex - 1,
     );
   };
 
-  const handleNextImage = () => {
+  const handleNextImage = (): void => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === hairdoImages.length - 1 ? 0 : prevIndex + 1,
     );
@@ -244,15 +253,16 @@ export default function CameraFilter() {
 
   // Product carousel helpers
   const currentStyleNum = hairdoEntries[currentImageIndex]?.styleNum;
-  const currentProducts = productImagesByStyle[currentStyleNum] || [];
+  const currentProducts =
+    currentStyleNum === undefined ? [] : productImagesByStyle[currentStyleNum] || [];
 
-  const handlePrevProduct = () => {
+  const handlePrevProduct = (): void => {
     setProductIndex((prev) =>
       prev === 0 ? currentProducts.length - 1 : prev - 1,
     );
   };
 
-  const handleNextProduct = () => {
+  const handleNextProduct = (): void => {
     setProductIndex((prev) =>
       prev === currentProducts.length - 1 ? 0 : prev + 1,
     );

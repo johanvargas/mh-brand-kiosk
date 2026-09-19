@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useActionData, NavLink, redirect } from "react-router";
 import products from "../database/products.js";
 import { io } from "socket.io-client";
-import useInactivityTimeout from "../components/useInactivityTimeout.js";
+import type { Socket } from "socket.io-client";
+import useInactivityTimeout from "../components/useInactivityTimeout";
+import type { ResultsActionData } from "../routes/routes";
 
 // Import images from each product folder
-const imageModules = import.meta.glob('../assets/*/PNGs/*.png', { eager: true });
+const imageModules = import.meta.glob<{ default: string }>(
+  "../assets/*/PNGs/*.png",
+  { eager: true },
+);
 
 // Organize images by folder index
-const productImages = {};
+const productImages: Record<number, string[]> = {};
 Object.entries(imageModules).forEach(([path, module]) => {
   const match = path.match(/\/assets\/(\d+)\/PNGs\//);
   if (match) {
@@ -22,12 +27,12 @@ Object.entries(imageModules).forEach(([path, module]) => {
 
 /* Socket IO connection */
 // IP needs to be the IP of the pi with the http server
-const socket = io("http://localhost:8081");
+const socket: Socket = io("http://localhost:8081");
 //const socket = io("http://192.168.0.195:8081");
 
 export default function Results() {
   useInactivityTimeout(30000);
-  const actData = useActionData();
+  const actData = useActionData() as ResultsActionData | undefined;
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
   const currentProduct = products[currentProductIndex] || products[0];
   const [idempote, setIdempote] = useState(0);
@@ -37,7 +42,9 @@ export default function Results() {
   const currentImages = productImages[currentProductIndex] || [];
 
   useEffect(() => {
-    setCurrentProductIndex(actData.selection);
+    // Falls back to the first product when reached without action data
+    // (e.g. navigating straight to /results).
+    if (actData) setCurrentProductIndex(actData.selection);
   }, []);
 
   // Reset carousel when product changes
@@ -45,21 +52,21 @@ export default function Results() {
     setCarouselIndex(0);
   }, [currentProductIndex]);
 
-  const nextImage = () => {
+  const nextImage = (): void => {
     setCarouselIndex((prev) => (prev + 1) % currentImages.length);
   };
 
-  const prevImage = () => {
+  const prevImage = (): void => {
     setCarouselIndex((prev) => (prev - 1 + currentImages.length) % currentImages.length);
   };
 
 
-  const updateIdem = () => {
+  const updateIdem = (): void => {
     setIdempote(prev => prev + 1)
 
   }
 
-  const setCubby = (cub) => {
+  const setCubby = (cub: number): void => {
     console.log(`cubby #${cub} illuminated`);
     console.log("idempotent item count: ", idempote);
     updateIdem();

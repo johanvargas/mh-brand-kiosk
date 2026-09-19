@@ -1,30 +1,44 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import type { CSSProperties } from "react";
 import { Form, NavLink } from "react-router";
 import { proxy, useSnapshot } from "valtio";
-import questionnaireState from "../state/questionnaireState.js";
-import { updateAnswerWeight } from "../components/updateAnswerWeight.js";
-import useInactivityTimeout from "../components/useInactivityTimeout.js";
-import * as questions from "../assets/mens-questions.json";
+import questionnaireState from "../state/questionnaireState";
+import { updateAnswerWeight } from "../components/updateAnswerWeight";
+import useInactivityTimeout from "../components/useInactivityTimeout";
+import questions from "../assets/mens-questions.json";
 import "../index.css";
 
+export interface Question {
+  id: number;
+  question: string;
+  sampleAnswers: string[];
+}
+
+export interface QuestionSet {
+  questions: Question[];
+}
+
 // question-answer store
-const quest = proxy(questions);
+const quest = proxy<QuestionSet>(questions);
 
 const QuestionSequence = () => {
   useInactivityTimeout(30000);
   const snap = useSnapshot(quest);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-  let questionSet = snap.questions[questionnaireState.currentQuestionIndex];
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const questionSet = snap.questions[questionnaireState.currentQuestionIndex];
 
   useEffect(() => {
     questionnaireState.currentQuestionIndex = 0;
   }, []);
 
   // function to move to next
-  const handleNext = () => {
+  const handleNext = (): void => {
     //console.log("question index: ", questionnaireState.currentQuestionIndex);
     //console.log("selected answer: ", selectedAnswer);
-    if (selectedAnswer <= 4 && questionnaireState.currentQuestionIndex < 4) {
+    // NOTE: `null <= 4` is true in JS, so this branch is also taken when nothing
+    // is selected; updateAnswerWeight then falls through to its default and stores 0.
+    // `?? 0` preserves that existing behaviour under TypeScript's null checks.
+    if ((selectedAnswer ?? 0) <= 4 && questionnaireState.currentQuestionIndex < 4) {
       updateAnswerWeight(
         selectedAnswer,
         questionnaireState.currentQuestionIndex,
@@ -90,7 +104,7 @@ const QuestionSequence = () => {
 
   // Nested Component
   const SelectQuestions = () => {
-    const handleOptionClick = (optionIndex) => {
+    const handleOptionClick = (optionIndex: number): void => {
       //console.log("handle option trig: ");
       //console.log("option: ", optionIndex);
       setSelectedAnswer(optionIndex);
@@ -113,7 +127,7 @@ const QuestionSequence = () => {
         </h1>
         <div
           className="question-progress-line"
-          style={{ "--fill-percentage": `${fillPercentage}%` }}
+          style={{ "--fill-percentage": `${fillPercentage}%` } as CSSProperties}
         ></div>
         <h2 className="question-text">{questionSet.question}</h2>
         <div className="options-container">

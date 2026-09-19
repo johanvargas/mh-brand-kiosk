@@ -1,22 +1,24 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, NavLink } from "react-router";
-import useInactivityTimeout from "../components/useInactivityTimeout.js";
+import useInactivityTimeout from "../components/useInactivityTimeout";
 import "../index.css";
+
+type MenuOption = "quiz" | "camera";
 
 const Menu = () => {
   useInactivityTimeout(30000);
   const navigate = useNavigate();
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState<MenuOption | null>(null);
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = (option: MenuOption): void => {
     setSelectedOption(option);
   };
 
-  const handleGoClick = () => {
+  const handleGoClick = (): void => {
     if (selectedOption === "quiz") {
-      navigate("/quiz", { viewTransition: true });
+      void navigate("/quiz", { viewTransition: true });
     } else if (selectedOption === "camera") {
-      navigate("/camera", { viewTransition: true });
+      void navigate("/camera", { viewTransition: true });
     }
   };
 

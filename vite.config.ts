@@ -3,7 +3,10 @@ import react from "@vitejs/plugin-react-swc";
 import tailwindcss from "@tailwindcss/vite";
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
-const DEFAULT_OPTIONS = {
+// The plugin does not export its options type, so derive it from the function.
+type ImageOptimizerOptions = NonNullable<Parameters<typeof ViteImageOptimizer>[0]>;
+
+const DEFAULT_OPTIONS: ImageOptimizerOptions = {
   logStats: true,
   ansiColors: true,
   test: /\.(jpe?g|png|gif|tiff|webp|svg|avif)$/i,
@@ -71,8 +74,6 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    ViteImageOptimizer({
-      DEFAULT_OPTIONS
-      }),
+    ViteImageOptimizer(DEFAULT_OPTIONS),
   ],
 });

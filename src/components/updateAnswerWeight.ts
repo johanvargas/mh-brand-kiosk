@@ -1,11 +1,16 @@
-import questionnaireState from "../state/questionnaireState.js";
+import questionnaireState from "../state/questionnaireState";
 
 /**
- * Updates the answer weight based on the selected answer index
- * @param {number} selectedAnswer - The index of the selected answer (0-4)
- * @param {number} currentQuestionIndex - The current question index
+ * Updates the answer weight based on the selected answer index.
+ * A `null` selection falls through to the default and stores 0.
+ *
+ * @param selectedAnswer - The index of the selected answer (0-4), or null when unanswered
+ * @param currentQuestionIndex - The current question index
  */
-export const updateAnswerWeight = (selectedAnswer, currentQuestionIndex) => {
+export const updateAnswerWeight = (
+  selectedAnswer: number | null,
+  currentQuestionIndex: number,
+): void => {
   switch (selectedAnswer) {
     case 0:
       questionnaireState.answerWeight[currentQuestionIndex] = 1;

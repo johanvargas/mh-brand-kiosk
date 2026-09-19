@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import image1 from "../assets/carousel_mens/Men's Passive Image 1.png";
 import image2 from "../assets/carousel_mens/Men's Passive Image 2.png";
 import image3 from "../assets/carousel_mens/Men's Passive Image 3.png";
 import image4 from "../assets/carousel_mens/Men's Passive Image 4.png";
 import image5 from "../assets/carousel_mens/Men's Passive Image 5.png";
-import { resetQuestionnaireState } from "../state/questionnaireState.js";
+import { resetQuestionnaireState } from "../state/questionnaireState";
 
-const carouselImages = [
+interface CarouselImage {
+  src: string;
+  alt: string;
+}
+
+const carouselImages: CarouselImage[] = [
   { src: image1, alt: "Men's styling image 1" },
   { src: image2, alt: "Men's styling image 2" },
   { src: image3, alt: "Men's styling image 3" },
@@ -64,7 +69,7 @@ export default function Home() {
 
         <button
           className="home-cta-button"
-          onClick={() => navigate("/menu", { viewTransition: true })}
+          onClick={() => void navigate("/menu", { viewTransition: true })}
         >
           Start Here
         </button>
