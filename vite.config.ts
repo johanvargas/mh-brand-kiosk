@@ -1,4 +1,5 @@
-import { defineConfig } from "vite";
+// `vitest/config` re-exports vite's defineConfig, with the `test` key typed.
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react-swc";
 import tailwindcss from "@tailwindcss/vite";
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
@@ -76,4 +77,15 @@ export default defineConfig({
     tailwindcss(),
     ViteImageOptimizer(DEFAULT_OPTIONS),
   ],
+  test: {
+    // Components need a DOM to render into; jsdom is an in-memory stand-in.
+    environment: "jsdom",
+    // Runs before every test file: registers jest-dom matchers and unmounts
+    // rendered components between tests.
+    setupFiles: ["./src/test/setup.ts"],
+    // Tests live next to the code they cover, as *.test.ts / *.test.tsx.
+    include: ["src/**/*.test.{ts,tsx}"],
+    // Imported stylesheets are stubbed rather than compiled; no test asserts on them.
+    css: false,
+  },
 });
